@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <!--jQuery-->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <!--Bootstrap 4 Javascript-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        <!--Bootstrap datepicker-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+        <!--Bootstrap-select-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/i18n/defaults-*.min.js"></script>
+
+        <!--Bootstrap 4 CSS-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <!--Bootstrap datepicker-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
+        <!--Bootstrap-select-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+
+    </head>
+    <body>
+    <div class ="container">
+        <div class="row">
+           <div class="col-lg-3">
+
+               <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Please upload AUM summary file</label>
+                <input type="file" class="form-control-file" id="file" name="file">
+            </div>
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="text" class="form-control" name="StartDate" id="StartDate">
+            </div>
+
+            <script type="text/javascript">
+
+            $(document).ready(function(){
+                $('#StartDate').datepicker({
+                    format: "mm-yyyy",
+                    startView: "months",
+                    minViewMode: "months",
+                    todayHighlight: true,
+                    clearBtn: true
+                });
+                $( "#StartDate" ).datepicker( "setDate", new Date());
+            });
+
+        </script>
+             </div>
+            </div>
+        <div class="row">
+           <div class="col-lg-2">
+
+            <button class="btn btn-success btn-sm" id="submitButton" type="submit">Upload</button>
+
+               </div>
+            </form>
+            <div class="col-lg-6">
+            <form action="/download_excel" method="POST" enctype="multipart/form-data">
+            <button class="btn btn-secondary btn-sm" id="downloadButton" >Download Excel</button>
+                </div>
+
+            </form>
+            </div>
+
+
+
+
+
+
+        {% if data is defined %}
+            {{data.render() | safe}}
+        {% endif %}
+        <!--if pandas use .to_html()-->
+    </div>
+<!--<script>-->
+<!--event.preventDefault();-->
+    <!--document.getElementById("#downloadButton").addEventListener("click", function(){-->
+<!--});-->
+<!--</script>-->
+    </body>
+</html>
