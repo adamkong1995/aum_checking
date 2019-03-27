@@ -1,7 +1,8 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Response
 from werkzeug.utils import secure_filename
 from helper import checking
+import time
 
 
 UPLOAD_FOLDER = os.path.abspath(os.path.dirname(__file__)) + '\\upload_folder'
@@ -21,16 +22,15 @@ def upload():
     if 'file' not in request.files:
         return "No File Uploaded1"
 
-
     file = request.files['file']
 
     if file.filename == '':
         return "No File Uploaded2"
 
     startdate = request.form['StartDate']
+
     if startdate =='':
         return "No Date selected."
-
 
     if file and allowed_file(file.filename) and startdate:
         filename = secure_filename(file.filename)
@@ -46,13 +46,14 @@ def allowed_file(filename):
 
 @app.route('/download_excel', methods=["POST"])
 def download_excel():
-     checking.download_excel()
-     return render_template('home.html')
-     # return redirect(url_for('upload'))
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    filename1 = 'result %s.xlsx' % (timestr)
+    excel = checking.download_excel()
+
+    return Response(excel, mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", headers={"Content-disposition":"attachment; filename =" + filename1})
 
 @app.errorhandler(404)
 def error_404(error):
-
     return render_template('404.html'),404
 
 
