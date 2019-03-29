@@ -34,8 +34,8 @@ def upload():
 
     if file and allowed_file(file.filename) and startdate:
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        data = checking.Checking(os.path.join(app.config['UPLOAD_FOLDER'] + '\\' + filename), startdate)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'upload.xls'))
+        data = checking.Checking(os.path.join(app.config['UPLOAD_FOLDER'] + '\\' + 'upload.xls'), startdate)
         return render_template('home.html', data=data)
     return "Test"
 
