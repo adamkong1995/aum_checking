@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, Response
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from werkzeug.utils import secure_filename
 from helper import checking
 import time
@@ -44,22 +44,12 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 @app.route('/download_excel', methods=["POST"])
 def download_excel():
-    timestr = time.strftime("%Y%m%d-%H%M%S")
-    filename1 = 'result %s.xlsx' % (timestr)
     excel = checking.download_excel()
-
-    return Response(excel, mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", headers={"Content-disposition":"attachment; filename =" + filename1})
+    return send_file('./download_folder/result.xlsx', as_attachment=True)
 
 @app.errorhandler(404)
 def error_404(error):
     return render_template('404.html'),404
-
-
-
-
-
-
-#if __name__ == ("__main__"):
-#    app.run(debug = True)
