@@ -1,8 +1,7 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
-from helper import checking
-import time
+from helper import data_process
 
 
 UPLOAD_FOLDER = os.path.abspath(os.path.dirname(__file__)) + '\\upload_folder'
@@ -29,13 +28,13 @@ def upload():
 
     startdate = request.form['StartDate']
 
-    if startdate =='':
+    if startdate == '':
         return "No Date selected."
 
     if file and allowed_file(file.filename) and startdate:
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'upload.xls'))
-        data = checking.Checking(os.path.join(app.config['UPLOAD_FOLDER'] + '\\' + 'upload.xls'), startdate)
+        data = data_process.process(os.path.join(app.config['UPLOAD_FOLDER'] + '\\' + 'upload.xls'), startdate)
         return render_template('home.html', data=data)
     return "Test"
 
@@ -47,7 +46,7 @@ def allowed_file(filename):
 
 @app.route('/download_excel', methods=["POST"])
 def download_excel():
-    excel = checking.download_excel()
+    excel = data_process.download_excelfile()
     return send_file('./download_folder/result.xlsx', as_attachment=True)
 
 @app.errorhandler(404)
